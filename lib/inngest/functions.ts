@@ -75,8 +75,11 @@ export const sendDailyNewsSummary = inngest.createFunction(
     if (!users || users.length === 0)
       return { success: false, message: "No users found for news email" };
 
-    const results = await step.run("fetch-user-news", async () => {
-      const perUser = [];
+    const results = users.map(user => ({
+  user,
+  articles: [{ title: "Test Article" }]
+}));
+
 
       for (const user of users) {
         try {
@@ -107,22 +110,23 @@ export const sendDailyNewsSummary = inngest.createFunction(
           JSON.stringify(articles, null, 2)
         );
 
-        const response = await step.ai.infer(`summarize-news-${user.email}`, {
-          model: step.ai.models.gemini({ model: "gemini-2.5-flash-lite" }),
-          body: {
-            contents: [{ role: "user", parts: [{ text: prompt }] }],
-          },
-        });
+ //       const response = await step.ai.infer(`summarize-news-${user.email}`, {
+     //model: step.ai.models.gemini({ model: "gemini-2.5-flash-lite" }),
+//  body: {
+ //   contents: [{ role: "user", parts: [{ text: prompt }] }],
+//  },
+ // timeout: 15000, // 15 seconds
+//    });
+
 
         const part = response.candidates?.[0]?.content?.parts?.[0];
         const newsContent =
           (part && "text" in part ? part.text : null) || "No market news.";
 
-        summaries.push({ user, newsContent });
-      } catch (e) {
-        summaries.push({ user, newsContent: null });
-      }
-    }
+       for (const { user, articles } of results) {
+  summaries.push({ user, newsContent: "Test summary content" });
+}
+
 
     await step.run("send-news-emails", async () => {
       await Promise.all(
