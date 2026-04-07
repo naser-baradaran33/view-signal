@@ -9,6 +9,8 @@ import { getWatchlistSymbolsByEmail } from "@/lib/actions/watchlist.actions";
 import { getNews } from "@/lib/actions/finnhub.actions";
 import { getFormattedTodayDate } from "@/lib/utils";
 
+/* ---------------------- SIGN UP EMAIL (UNCHANGED) ---------------------- */
+
 export const sendSignUpEmail = inngest.createFunction(
   {
     id: "sign-up-email",
@@ -61,6 +63,8 @@ export const sendSignUpEmail = inngest.createFunction(
   }
 );
 
+/* ---------------------- DAILY NEWS SUMMARY (FIXED) ---------------------- */
+
 export const sendDailyNewsSummary = inngest.createFunction(
   {
     id: "daily-news-summary",
@@ -70,69 +74,44 @@ export const sendDailyNewsSummary = inngest.createFunction(
     },
   },
   async ({ step }) => {
+    // 1) دریافت کاربران
     const users = await step.run("get-all-users", getAllUsersForNewsEmail);
 
-    if (!users || users.length === 0)
+    if (!users || users.length === 0) {
       return { success: false, message: "No users found for news email" };
+    }
 
-    const results = users.map(user => ({
-  user,
-  articles: [{ title: "Test Article" }]
-}));
+    // 2) جمع‌آوری اخبار برای هر کاربر
+    const perUser: { user: any; articles: any[] }[] = [];
 
-
-      for (const user of users) {
-        try {
-          const symbols = await getWatchlistSymbolsByEmail(user.email);
-          let articles = await getNews(symbols);
-          articles = (articles || []).slice(0, 6);
-
-          if (!articles.length) {
-            articles = await getNews();
-            articles = (articles || []).slice(0, 6);
-          }
-
-          perUser.push({ user, articles });
-        } catch (e) {
-          perUser.push({ user, articles: [] });
-        }
-      }
-
-      return perUser;
-    });
-
-    const summaries = [];
-
-    for (const { user, articles } of results) {
+    for (const user of users) {
       try {
-        const prompt = NEWS_SUMMARY_EMAIL_PROMPT.replace(
-          "{{newsData}}",
-          JSON.stringify(articles, null, 2)
-        );
+        const symbols = await getWatchlistSymbolsByEmail(user.email);
 
- //       const response = await step.ai.infer(`summarize-news-${user.email}`, {
-     //model: step.ai.models.gemini({ model: "gemini-2.5-flash-lite" }),
-//  body: {
- //   contents: [{ role: "user", parts: [{ text: prompt }] }],
-//  },
- // timeout: 15000, // 15 seconds
-//    });
+        let articles = await getNews(symbols);
+        articles = (articles || []).slice(0, 6);
 
+        if (!articles.length) {
+          articles = await getNews();
+          articles = (articles || []).slice(0, 6);
+        }
 
-        const part = response.candidates?.[0]?.content?.parts?.[0];
-        const newsContent =
-          (part && "text" in part ? part.text : null) || "No market news.";
+        perUser.push({ user, articles });
+      } catch (e) {
+        perUser.push({ user, articles: [] });
+      }
+    }
 
-       for (const { user, articles } of results) {
-  summaries.push({ user, newsContent: "Test summary content" });
-}
+    // 3) خلاصه‌سازی اخبار (فعلاً تستی)
+    const summaries = perUser.map(({ user }) => ({
+      user,
+      newsContent: "Test summary content",
+    }));
 
-
+    // 4) ارسال ایمیل‌ها
     await step.run("send-news-emails", async () => {
       await Promise.all(
         summaries.map(async ({ user, newsContent }) => {
-          if (!newsContent) return false;
-
           return await sendNewsSummaryEmail({
             email: user.email,
             date: getFormattedTodayDate(),
