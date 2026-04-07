@@ -1,3 +1,15 @@
-import { handler } from "@/lib/inngest/serve";
+export const dynamic = "force-dynamic";
 
-export const { GET, POST, PUT } = handler;
+import { serve } from "inngest/next";
+import { inngest } from "@/lib/inngest/client";
+
+// فانکشن‌هایی که خودت ساختی
+import { sendSignUpEmail, sendDailyNewsSummary } from "@/lib/inngest/functions";
+
+export const { GET, POST } = serve({
+  client: inngest,
+  functions: [
+    sendSignUpEmail,
+    sendDailyNewsSummary,
+  ],
+});
