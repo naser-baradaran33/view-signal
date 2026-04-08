@@ -32,8 +32,8 @@ export const getAuth = async () => {
 
     events: {
       user: {
-        async created(user) {
-          console.log("🔥 BetterAuth user created:", user.email);
+        async created({ user }) {
+          console.log("BetterAuth user created:", user.email);
 
           await inngest.send({
             name: "app/user.created",

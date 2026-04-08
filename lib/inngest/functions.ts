@@ -70,7 +70,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
     triggers: [{ cron: "0 12 * * *" }],
   },
   async ({ step }) => {
-    console.log("🟡 DAILY NEWS SUMMARY START");
+    console.log("DAILY NEWS SUMMARY START");
 
     const users = await step.run("get-all-users", async () => {
       const list = await getAllUsersForNewsEmail();
@@ -161,7 +161,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
       }
     });
 
-    console.log("🟢 DAILY NEWS SUMMARY DONE");
+    console.log("DAILY NEWS SUMMARY DONE");
 
     return { success: true };
   }
