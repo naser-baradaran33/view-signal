@@ -1,5 +1,9 @@
+// lib/email/index.ts
 import { resend } from "@/lib/resend";
-import { WELCOME_EMAIL_TEMPLATE, NEWS_SUMMARY_EMAIL_TEMPLATE } from "./templates";
+import {
+  WELCOME_EMAIL_TEMPLATE,
+  NEWS_SUMMARY_EMAIL_TEMPLATE,
+} from "./templates";
 
 export const sendWelcomeEmail = async ({
   email,
@@ -14,7 +18,7 @@ export const sendWelcomeEmail = async ({
     .replace("{{name}}", name)
     .replace("{{intro}}", intro);
 
-  await resend.emails.send({
+  return await resend.emails.send({
     from: "ViewSignal <onboarding@resend.dev>",
     to: email,
     subject: "Welcome to ViewSignal - your stock market toolkit is ready!",
@@ -35,7 +39,7 @@ export const sendNewsSummaryEmail = async ({
     .replace("{{date}}", date)
     .replace("{{newsContent}}", newsContent);
 
-  await resend.emails.send({
+  return await resend.emails.send({
     from: "Signalist News <news@resend.dev>",
     to: email,
     subject: `📈 Market News Summary Today - ${date}`,
