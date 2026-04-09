@@ -109,13 +109,10 @@ export const sendDailyNewsSummary = inngest.createFunction(
             }
 
             const articlesText = articles
-              .map(
-                (a, i) =>
-                  `${i + 1}. ${a.headline || a.title || ""} - ${
-                    a.summary || ""
-                  }`
-              )
-              .join("\n");
+           .map((a: any, i: number) =>
+             `${i + 1}. ${a.headline || a.title || ""} - ${a.summary || ""}`)
+           .join("\n");
+
 
             const prompt = NEWS_SUMMARY_EMAIL_PROMPT.replace(
               "{{news}}",

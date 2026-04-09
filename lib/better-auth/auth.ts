@@ -4,7 +4,7 @@ import { connectToDatabase } from "@/database/mongoose";
 import { nextCookies } from "better-auth/next-js";
 import { inngest } from "@/lib/inngest/client";
 
-let authInstance: ReturnType<typeof betterAuth> | null = null;
+let authInstance: any = null; // ← مهم‌ترین اصلاح
 
 export const getAuth = async () => {
   if (authInstance) return authInstance;
@@ -16,8 +16,8 @@ export const getAuth = async () => {
 
   authInstance = betterAuth({
     database: mongodbAdapter(db as any),
-    secret: process.env.BETTER_AUTH_SECRET,
-    baseURL: process.env.BETTER_AUTH_URL,
+    secret: process.env.BETTER_AUTH_SECRET!,
+    baseURL: process.env.BETTER_AUTH_URL!,
 
     emailAndPassword: {
       enabled: true,
