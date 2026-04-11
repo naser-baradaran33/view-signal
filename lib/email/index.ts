@@ -40,7 +40,7 @@ export const sendNewsSummaryEmail = async ({
     .replace("{{newsContent}}", newsContent);
 
   return await resend.emails.send({
-    from: "Signalist News <news@resend.dev>",
+    from: "ViewSignal <onboarding@resend.dev>",
     to: email,
     subject: `📈 Market News Summary Today - ${date}`,
     html,

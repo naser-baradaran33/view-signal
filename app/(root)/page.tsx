@@ -9,6 +9,8 @@ import {sendDailyNewsSummary} from "@/lib/inngest/functions";
 
 const Home = () => {
     const scriptUrl = `https://s3.tradingview.com/external-embedding/embed-widget-`;
+    console.log("RESEND_API_KEY:", process.env.RESEND_API_KEY)
+
 
     return (
         <div className="flex min-h-screen home-wrapper">
