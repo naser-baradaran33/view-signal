@@ -48,8 +48,23 @@ export const getAuth = async () => {
           });
         },
       },
+       session: {
+        // 🟢 SIGN‑IN → session.created
+        async created({ session, user }) {
+          console.log("BetterAuth user signed in:", user.email);
+
+          await inngest.send({
+            name: "app/user.signedIn",
+            data: {
+              email: user.email,
+              name: user.name ?? "",
+            },
+          });
+        },
+      },
     },
   });
+    
 
   return authInstance;
 };
