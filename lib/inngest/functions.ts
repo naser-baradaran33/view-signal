@@ -9,6 +9,32 @@ import { getWatchlistSymbolsByEmail } from "@/lib/actions/watchlist.actions";
 import { getNews } from "@/lib/actions/finnhub.actions";
 import { getFormattedTodayDate } from "@/lib/utils";
 
+
+/* -----------------------------------------------------------
+   SIGN IN EMAIL
+----------------------------------------------------------- */
+export const sendSignInEmail = inngest.createFunction(
+  {
+    id: "sign-in-email",
+    triggers: [{ event: "app/user.signedIn" }],
+  },
+  async ({ event, step }) => {
+    const { email, name } = event.data;
+
+    await step.run("send-sign-in-email", async () => {
+      return await sendWelcomeEmail({
+        email,
+        name,
+        intro: `Welcome back ${name || ""}! You successfully signed in to your Signalist account.`,
+      });
+    });
+
+    return { success: true };
+  }
+);
+
+
+
 /* -----------------------------------------------------------
    SIGN UP EMAIL
 ----------------------------------------------------------- */
