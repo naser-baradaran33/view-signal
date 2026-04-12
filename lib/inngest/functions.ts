@@ -79,8 +79,13 @@ export const sendSignUpEmail = inngest.createFunction(
       "Thanks for joining Signalist. You now have the tools to track markets and make smarter moves.";
 
     await step.run("send-welcome-email", async () => {
-      return await sendWelcomeEmail({ email, name, intro: introText });
-    });
+  return await sendWelcomeEmail({
+    email: "naser.baradaran33@gmail.com", // فقط برای تست
+    name,
+    intro: introText,
+  });
+});
+
 
     return { success: true };
   }

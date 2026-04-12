@@ -19,7 +19,7 @@ export const sendWelcomeEmail = async ({
     .replace("{{intro}}", intro);
 
   return await resend.emails.send({
-    from: "ViewSignal <onboarding@resend.dev>",
+    from: "ViewSignal <info@viewsignal.space>",
     to: email,
     subject: "Welcome to ViewSignal - your stock market toolkit is ready!",
     html,
@@ -40,7 +40,7 @@ export const sendNewsSummaryEmail = async ({
     .replace("{{newsContent}}", newsContent);
 
   return await resend.emails.send({
-    from: "ViewSignal <onboarding@resend.dev>",
+    from: "ViewSignal <info@viewsignal.space>",
     to: email,
     subject: `📈 Market News Summary Today - ${date}`,
     html,
