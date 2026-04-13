@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 const MONGODB_URL = process.env.MONGODB_URL;
 
 declare global {
   var mongooseCache: {
-    conn: typeof mongoose | null;
-    promise: Promise<typeof mongoose> | null;
+    conn: Mongoose | null;
+    promise: Promise<Mongoose> | null;
   };
 }
 
@@ -15,7 +15,7 @@ if (!cached) {
   cached = global.mongooseCache = { conn: null, promise: null };
 }
 
-export const connectToDatabase = async () => {
+export const connectToDatabase = async (): Promise<Mongoose> => {
   if (!MONGODB_URL) {
     throw new Error("MONGODB_URL must be set within .env");
   }
@@ -39,5 +39,5 @@ export const connectToDatabase = async () => {
     `Connected to database ${process.env.NODE_ENV} - ${MONGODB_URL}`
   );
 
-  return cached.conn.connection.db;
+  return cached.conn;
 };
