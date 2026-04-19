@@ -80,7 +80,7 @@ export const sendSignUpEmail = inngest.createFunction(
 
     await step.run("send-welcome-email", async () => {
   return await sendWelcomeEmail({
-    email: "naser.baradaran33@gmail.com", // فقط برای تست
+    email,
     name,
     intro: introText,
   });
