@@ -13,7 +13,7 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
         <main className="auth-layout">
             <section className="auth-left-section scrollbar-hide-default">
                 <Link href="/" className="auth-logo">
-                    <Image src="/assets/icons/logo.svg" alt="Signalist logo" width={140} height={32} className='h-8 w-auto' />
+                    <Image src="/assets/icons/logoo.svg" alt="View Signal logoo" width={140} height={32} className='h-8 w-auto' />
                 </Link>
 
                 <div className="pb-6 lg:pb-8 flex-1">{children}</div>
@@ -22,11 +22,11 @@ const Layout = async ({ children }: { children : React.ReactNode }) => {
             <section className="auth-right-section">
                 <div className="z-10 relative lg:mt-4 lg:mb-16">
                     <blockquote className="auth-blockquote">
-                        Signalist turned my watchlist into a winning list. The alerts are spot-on, and I feel more confident making moves in the market
+                        View Signal turned my watchlist into a winning list. The alerts are spot-on, and I feel more confident making moves in the market
                     </blockquote>
                     <div className="flex items-center justify-between">
                         <div>
-                            <cite className="auth-testimonial-author">- Ethan R.</cite>
+                            <cite className="auth-testimonial-author">Naser Baradaran</cite>
                             <p className="max-md:text-xs text-gray-500">Retail Investor</p>
                         </div>
                         <div className="flex items-center gap-0.5">
